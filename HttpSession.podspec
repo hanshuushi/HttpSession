@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
 
   s.homepage     = "https://github.com/hanshuushi/HttpSession"
   s.requires_arc = true
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -93,7 +93,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "*.{swift}"
+  s.source_files  = "HttpSession/*.{swift}"
   s.swift_version = "4.0"
 
   # s.public_header_files = "Classes/**/*.h"
@@ -135,6 +135,8 @@ Pod::Spec.new do |s|
   # s.requires_arc = true
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  # s.dependency "JSONKit", "~> 1.4"
+   s.dependency 'ObjectMapper'
+   s.dependency 'AFNetworking', '~> 3.0'
+   s.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => 'HttpSession/HttpSession-Bridging-Header.h' }
 
 end
