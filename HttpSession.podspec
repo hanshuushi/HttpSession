@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "HttpSession"
-  s.version      = "0.0.1"
+  s.version      = "0.1.0"
   s.summary      = "网络请求"
 
   # This description is used to generate tags and improve search results.
@@ -29,6 +29,8 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/hanshuushi/HttpSession"
+  s.requires_arc = true
+  s.ios.deployment_target = '8.0'
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -92,6 +94,7 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  = "*.{swift}"
+  s.swift_version = "4.0"
 
   # s.public_header_files = "Classes/**/*.h"
 
