@@ -8,7 +8,7 @@
 
 import UIKit
 import ObjectMapper
-
+/*
 /// HTTP 请求返回的错误
 ///
 /// - requestFail: 请求过程中发生的错误
@@ -865,7 +865,7 @@ fileprivate class HttpModelDictionaryResponse<T:Model> : HttpResponse  {
         }
     }
 }
-
+*/
 
 
 

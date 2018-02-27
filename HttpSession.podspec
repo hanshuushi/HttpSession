@@ -93,7 +93,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "HttpSession/*.{swift}"
+  s.source_files  = "HttpSession/*.{swift}", "*.{h,m}"
   s.swift_version = "4.0"
 
   # s.public_header_files = "Classes/**/*.h"
@@ -137,6 +137,7 @@ Pod::Spec.new do |s|
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
    s.dependency 'ObjectMapper'
    s.dependency 'AFNetworking', '~> 3.0'
+   s.preserve_path = 'HttpSession-Bridging-Header.h'
    s.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => 'HttpSession-Bridging-Header.h' }
 
 end

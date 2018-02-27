@@ -14,7 +14,7 @@ protocol ModelType { }
 protocol Model: Mappable, ModelType {
     
 }
-
+/*
 protocol ModelListTyper: ModelType {
     associatedtype M : Model
     
@@ -612,3 +612,4 @@ fileprivate extension String {
         return scan.scanInt(&val) && scan.isAtEnd
     }
 }
+ */
