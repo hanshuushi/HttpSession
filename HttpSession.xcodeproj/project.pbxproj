@@ -8,17 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		8BC03857CDEEEDC3B143A9BA /* Pods_HttpSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 987A34EB9D9129A81D4BD673 /* Pods_HttpSession.framework */; };
-		8EFD7375204531D10083515C /* HttpSession-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EFD7371204531D10083515C /* HttpSession-Bridging-Header.h */; };
 		8EFD7376204531D10083515C /* HttpSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFD7372204531D10083515C /* HttpSession.swift */; };
 		8EFD7377204531D10083515C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8EFD7373204531D10083515C /* Info.plist */; };
+		8EFD737A2045333E0083515C /* HttpSession-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EFD73792045333E0083515C /* HttpSession-Bridging-Header.h */; };
+		8EFD737C204533A30083515C /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFD737B204533A20083515C /* Common.swift */; };
+		8EFD737E204535890083515C /* URLConfigProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFD737D204535890083515C /* URLConfigProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		79B72EC1F586DC9C88717F87 /* Pods-HttpSession.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpSession.release.xcconfig"; path = "Pods/Target Support Files/Pods-HttpSession/Pods-HttpSession.release.xcconfig"; sourceTree = "<group>"; };
 		8EFD7367204531B70083515C /* HttpSession.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HttpSession.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8EFD7371204531D10083515C /* HttpSession-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HttpSession-Bridging-Header.h"; sourceTree = "<group>"; };
 		8EFD7372204531D10083515C /* HttpSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpSession.swift; sourceTree = "<group>"; };
 		8EFD7373204531D10083515C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EFD73792045333E0083515C /* HttpSession-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HttpSession-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		8EFD737B204533A20083515C /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		8EFD737D204535890083515C /* URLConfigProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConfigProtocol.swift; sourceTree = "<group>"; };
 		987A34EB9D9129A81D4BD673 /* Pods_HttpSession.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HttpSession.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B36933B021624396E649DC49 /* Pods-HttpSession.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpSession.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HttpSession/Pods-HttpSession.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,8 +77,10 @@
 		8EFD7369204531B70083515C /* HttpSession */ = {
 			isa = PBXGroup;
 			children = (
-				8EFD7371204531D10083515C /* HttpSession-Bridging-Header.h */,
+				8EFD73792045333E0083515C /* HttpSession-Bridging-Header.h */,
+				8EFD737B204533A20083515C /* Common.swift */,
 				8EFD7372204531D10083515C /* HttpSession.swift */,
+				8EFD737D204535890083515C /* URLConfigProtocol.swift */,
 				8EFD7373204531D10083515C /* Info.plist */,
 			);
 			path = HttpSession;
@@ -87,7 +93,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EFD7375204531D10083515C /* HttpSession-Bridging-Header.h in Headers */,
+				8EFD737A2045333E0083515C /* HttpSession-Bridging-Header.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +203,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EFD737C204533A30083515C /* Common.swift in Sources */,
+				8EFD737E204535890083515C /* URLConfigProtocol.swift in Sources */,
 				8EFD7376204531D10083515C /* HttpSession.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

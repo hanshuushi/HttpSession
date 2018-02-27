@@ -22,13 +22,13 @@ enum HttpError : Error {
     var description:String {
         switch self {
         case .serializerFail:
-            return "返回数据错误T_T"
+            return "返回数据错误。"
         case .requestFail(let errorMessage):
             return errorMessage
         case .businessError(_, let description):
             return description
         case .invalidData:
-            return "无效的数据返回"
+            return "无效的数据返回。"
         }
     }
     
@@ -56,12 +56,12 @@ fileprivate extension NSError {
 
 /// HTTP 会话管理
 class HttpSession {
-    // HTTP 配置相关
-    private static let baseUrl = URLConfig.api
+    // HTTP 配置相关 可在AppDelegate上配置
+    open static var urlConfig: URLConfig!
     
     /// AFNetworking 管理单列
     fileprivate static let urlManager:AFHTTPSessionManager = {
-        guard let baseUrl = URL(string: HttpSession.baseUrl) else {
+        guard let baseUrl = URL(string: HttpSession.urlConfig.baseURL) else {
             fatalError("Base Url Error")
         }
         
@@ -70,7 +70,7 @@ class HttpSession {
         
         manager.responseSerializer = AFHTTPResponseSerializer()
         
-        manager.completionQueue = DispatchQueue(label: "com.zhiyou.flygo")
+        manager.completionQueue = DispatchQueue(label: "com.latte.httpsession")
         
         /// https 
         let securityPolicy = AFSecurityPolicy.default()
@@ -120,8 +120,8 @@ class HttpSession {
         
         let requestSerializer = urlManager.requestSerializer
         
-        requestSerializer.setValue(VersionManager.version, forHTTPHeaderField: "Version")
-        requestSerializer.setValue(VersionManager.deviceToken, forHTTPHeaderField: "DeviceNo")
+        requestSerializer.setValue(HttpSession.urlConfig.version,
+                                   forHTTPHeaderField: HttpSession.urlConfig.versionKeyInHeader)
         
         if let dict = getHeaderHandler?() {
             for (key, value) in dict {
@@ -140,7 +140,7 @@ class HttpSession {
     
     static var validingSessionQueue:[HttpSession] = []
     
-    static let requestQueue:DispatchQueue = DispatchQueue(label: "com.zhiyou.flygo")
+    static let requestQueue:DispatchQueue = DispatchQueue(label: "com.latte.httpsession")
     
     static var validingToken:Bool = false
     
@@ -149,51 +149,8 @@ class HttpSession {
 
 // MARK: - 请求相关
 extension HttpSession {
-    
-    static func validToken(of session:HttpSession) {
-        validingSessionQueue.append(session)
-        
-        if validingToken {
-            return
-        }
-        
-        validingToken = true
-        
-        post(urlString: "member/getAccessToken",
-             isJson: true,
-             params: ["customerId":UserManager.shareInstance.currentId,
-                      "token": UserManager.shareInstance.currentToken])
-            .responseModel({ (model:API.AccessToken) in
-                
-                UserManager.shareInstance.changeToken(model.token)
-                
-                for one in validingSessionQueue {
-                    one.setupTask()
-                }
-                
-                validingSessionQueue = []
-                
-                validingToken = false
-                
-            }) { (error) in
-                
-                for one in validingSessionQueue {
-                    if let task = one.dataTask as? URLSessionDataTask {
-                        one.response?.failure(task,
-                                              error)
-                    }
-                }
-                
-                HttpSession.tokenInValidHandler?()
-                
-                validingSessionQueue = []
-                
-                validingToken = false
-        }
-    }
-    
     static func get(urlString:String,
-                    params:Any? = API.defaultDict) -> HttpSession {
+                    params:Any? = nil) -> HttpSession {
         
         let session = HttpSession()
         
@@ -220,16 +177,7 @@ extension HttpSession {
                          failure: {
                             (task, error) in
                             
-                            if let httpResponse = task?.response as? HTTPURLResponse, httpResponse.statusCode == 403, urlString != "member/getAccessToken", urlString != "member/outLogin" {
-                                
-                                tokenLock.lock()
-                                
-                                validToken(of: session)
-                                
-                                tokenLock.unlock()
-                            } else {
-                                session.response?.failure(task, error)
-                            }
+                            session.response?.failure(task, error)
                     })
             }
             
@@ -267,16 +215,7 @@ extension HttpSession {
                           failure: {
                             (task, error) in
                             
-                            if let httpResponse = task?.response as? HTTPURLResponse, httpResponse.statusCode == 403, urlString != "member/getAccessToken", urlString != "member/outLogin", (tokenInValidCondition?() ?? true) {
-                                
-                                tokenLock.lock()
-                                
-                                validToken(of: session)
-                                
-                                tokenLock.unlock()
-                            } else {
-                                session.response?.failure(task, error)
-                            }
+                            session.response?.failure(task, error)
                     })
             }
             
@@ -493,27 +432,28 @@ fileprivate struct HttpModelResponseStruct: Mappable {
     var result:Any!
     
     init?(map: Map) {
-        code    <- (map["respcode"], API.IntTransform())
+        
+        code    <- (map[HttpSession.urlConfig.responseDataKey.code], APITransform.IntTransform())
         
         guard let code = self.code else {
             return nil
         }
         
-        message <- map["respmsg"]
+        message <- map[HttpSession.urlConfig.responseDataKey.message]
         
         if code != 0 && message == nil {
             return nil
         }
         
-        result  <- map["datas"]
+        result  <- map[HttpSession.urlConfig.responseDataKey.data]
     }
     
     mutating func mapping(map: Map) {
-        code    <- (map["respcode"], API.IntTransform())
+        code    <- (map[HttpSession.urlConfig.responseDataKey.code], APITransform.IntTransform())
         
-        message <- map["respmsg"]
+        message <- map[HttpSession.urlConfig.responseDataKey.message]
         
-        result  <- map["datas"]
+        result  <- map[HttpSession.urlConfig.responseDataKey.data]
     }
     
     var isSuccess:Bool {
@@ -556,8 +496,6 @@ fileprivate struct HttpModelResponseStruct: Mappable {
         } else if let json = result as? [String:Any] {
             if json.keys.count > 1, let _model = M(JSON: json) {
                 model.append(_model)
-            } else if json.keys.count == 1, let array = json.random() as? [[String:Any]], array.count > 0 {
-                model = array.map({ M(JSON: $0) }).filter({ $0 != nil }).map({ $0! })
             }
         } else if result == nil {
             model = []
