@@ -1,0 +1,15 @@
+Pod::Spec.new do |s|
+s.name = 'HttpSession'
+s.version = '0.0.1'
+s.license = { :type => 'MIT', :file => 'LICENSE' }
+s.summary = '基于AFNetwrok和ObjectMapper的Swfit网络会话框架'
+s.homepage = 'https://github.com/hanshuushi/HttpSession'
+s.author = { 'Han Shuushi' => 'hanshuushi@gmail.com' }
+s.requires_arc = true
+s.ios.deployment_target = '8.0'
+s.source = { :git => "https://github.com/hanshuushi/HttpSession.git", :tag => s.version.to_s}
+s.source_files = "HttpSession/HttpSession.swift"
+s.frameworks = 'UIKit'
+s.dependency 'ObjectMapper'
+s.dependency 'AFNetworking'
+end
